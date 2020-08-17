@@ -22,3 +22,9 @@
     position: fixed;
     top: 126px;
 }
+.Complabel{
+    font-size: 35px;
+    position: fixed;
+    font-weight: bolder;
+    color: #989494;
+}

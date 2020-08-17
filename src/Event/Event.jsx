@@ -14,7 +14,7 @@ import { Card, Row, Col } from 'reactstrap';
 import TextField from '@material-ui/core/TextField';
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
-
+import moment from 'moment'
 //Import reusing component's
 import DialogComp from './dialogComponent'
 import SchedularComp from './schedulerComponent'
@@ -289,7 +289,7 @@ class EventPage extends Component {
             <div className="d-flex">
               <div className="ml-auto">
                 <Button onClick={() => this.state.isEvent ? this.CreateEvent() : this.UpdateEvent()}>
-                {this.state.isEvent ? 'Save' : 'Update'}
+                  {this.state.isEvent ? 'Save' : 'Update'}
                 </Button>
               </div>
             </div>
@@ -316,7 +316,9 @@ class EventPage extends Component {
           style={{
             margin: "0px"
           }}>
-          <Col md="6">
+          <Col md="6" style={{
+            borderRight: '1px solid #ccc'
+          }}>
             <div className="d-flex">
               <label className="label">Event Details</label>
               <div className="ml-auto">
@@ -332,7 +334,7 @@ class EventPage extends Component {
                   return (<Col md="6" key={index} className="cardStly">
                     <Card body outline color="secondary">
                       <CardTitle className="label">{val.destination}</CardTitle>
-                      <CardSubtitle className="subTitle">{new Date(val.start)} | duration {val.duration}</CardSubtitle>
+                      <CardSubtitle className="subTitle">{moment(val.start).format('MMM. D, yyyy')} | duration {val.duration}</CardSubtitle>
                       <CardText className="cardbodyContent">{val.comment}</CardText>
                       <div>
                         <IconButton style={{ outline: '0' }} title="Edit Event"
@@ -345,13 +347,13 @@ class EventPage extends Component {
                         </IconButton>
                       </div>
                     </Card>
-                  </Col>);
+                  </Col>)
                 }) : null}
               </Row>
             </CardDeck>
           </Col>
           <Col md='6'>
-            <label></label>
+            <label className="Complabel">Detangled Engineering</label>
             <SchedularComp
               dataSource={this.state.eventDetails}
               views={views}
