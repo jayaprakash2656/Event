@@ -1,0 +1,9 @@
+.jr-card {
+    padding: 30px;
+    -o-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    margin-bottom: 1.875rem;
+    background-color: #fff;
+    border-radius: 0.375rem;
+    position: relative;
+}

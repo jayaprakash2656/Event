@@ -1,12 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Event from './Event/index';
 import * as serviceWorker from './serviceWorker';
+
+//import style
+import 'bootstrap/dist/css/bootstrap.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Event />
   </React.StrictMode>,
   document.getElementById('root')
 );
