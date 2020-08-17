@@ -39,9 +39,37 @@ class EventPage extends Component {
       duration: '',
       destination: '',
       id: 0,
+      errors: {},
       selectedDate: new Date()
     }
   }
+
+  handleValidation(){
+    let errors = {};
+    let formIsValid = true;
+
+    //Destination
+    if(!this.state.destination){
+       formIsValid = false;
+       errors["destination"] = "Destination Cannot be empty";
+    }
+
+    //duration
+    if(!this.state.duration){
+      formIsValid = false;
+      errors["duration"] = "Duration Cannot be empty";
+   }
+
+   //comment
+   if(!this.state.comment){
+    formIsValid = false;
+    errors["comment"] = "Comment Cannot be empty";
+ }
+
+   this.setState({errors: errors});
+   return formIsValid;
+}
+
   handleCreateEvent = () => {
     this.setState({ isEvent: true }, () => {
     })
@@ -70,7 +98,7 @@ class EventPage extends Component {
   };
 
   onCloseModal = () => {
-    this.setState({ isEvent: false, isEventEdit: false, comment: '', duration: '', destination: '', id: 0, selectedDate: new Date() })
+    this.setState({ isEvent: false, isEventEdit: false, comment: '', duration: '', destination: '', id: 0, selectedDate: new Date(), errors: {} })
   }
 
   //Displaying details of all the events
@@ -107,6 +135,7 @@ class EventPage extends Component {
 
   // Create events
   CreateEvent() {
+    if(this.handleValidation()){
     fetch(links.eventDetails, {
       method: "POST",
       body:
@@ -143,10 +172,12 @@ class EventPage extends Component {
 
         ),
       );
+        }
   }
 
   // Update events
   UpdateEvent() {
+    if(this.handleValidation()){
     fetch(links.eventDetails + '/' + this.state.id + '/', {
       method: "PUT",
       body:
@@ -183,6 +214,7 @@ class EventPage extends Component {
 
         ),
       );
+        }
   }
 
   // Delete events
@@ -237,6 +269,7 @@ class EventPage extends Component {
               variant="outlined"
               fullWidth
             />
+            <span style={{color: "red"}}>{this.state.errors["destination"]}</span>
           </Col>
           <Col md="4">
             <TextField
@@ -248,6 +281,7 @@ class EventPage extends Component {
               variant="outlined"
               fullWidth
             />
+            <span style={{color: "red"}}>{this.state.errors["duration"]}</span>
           </Col>
           <Col md="4">
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -281,6 +315,7 @@ class EventPage extends Component {
               variant="outlined"
               fullWidth={true}
             />
+            <span style={{color: "red"}}>{this.state.errors["comment"]}</span>
           </Col>
         </Row>
         <br />
