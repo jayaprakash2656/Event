@@ -17,6 +17,7 @@
     "devextreme-react": "^20.1.6",
     "moment": "^2.27.0",
     "react": "^16.13.1",
+    "react-bootstrap-sweetalert": "^5.2.0",
     "react-dom": "^16.13.1",
     "react-notifications": "^1.6.0",
     "react-scripts": "3.4.3",

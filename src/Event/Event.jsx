@@ -6,6 +6,7 @@ import {
   Button, CardTitle, CardText, CardDeck,
   CardSubtitle
 } from 'reactstrap';
+import SweetAlert from 'react-bootstrap-sweetalert';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined';
@@ -39,6 +40,8 @@ class EventPage extends Component {
       duration: '',
       destination: '',
       id: 0,
+      deleteID: 0,
+      isOpenAlert: false,
       errors: {},
       selectedDate: new Date()
     }
@@ -218,8 +221,8 @@ class EventPage extends Component {
   }
 
   // Delete events
-  DeleteEvent(id) {
-    fetch(links.eventDetails + '/' + id + '/', {
+  DeleteEvent() {
+    fetch(links.eventDetails + '/' + this.state.deleteID + '/', {
       method: "Delete",
       headers: {
         Accept: "application/json",
@@ -235,6 +238,7 @@ class EventPage extends Component {
         if (json[0] === 200) {
           this.AllEvent();
           NotificationManager.success('Event deleted successfully');
+          this.setState({isOpenAlert: false})
         }
       })
       .catch(error =>
@@ -255,6 +259,32 @@ class EventPage extends Component {
   render() {
     let addEvent;
     let dialogContent;
+    let deleteEvent;
+
+    deleteEvent = (
+      <SweetAlert
+					show={this.state.isOpenAlert}
+					error
+					showCancel
+					confirmBtnText={<span>Ok</span>}
+					confirmBtnBsStyle="primary"
+					cancelBtnBsStyle="default"
+					onOutsideClick={() => {
+						this.setState({ isOpenAlert: true })
+					  }}
+					title={<span>Are you sure want to delete!</span>}
+					onConfirm={() => {
+						this.DeleteEvent()
+					}}
+					onCancel={() => {
+						this.setState({ isOpenAlert: false, deleteID: 0 });
+					}}
+				>
+					<label>
+						You will not be able to recover this record!
+					</label>
+				</SweetAlert>
+    )
 
     dialogContent = (
       <div>
@@ -275,6 +305,7 @@ class EventPage extends Component {
             <TextField
               id="duration"
               margin="dense"
+              type="number"
               value={this.state.duration}
               onChange={(e) => this.handleTextfield('duration', e.target.value)}
               label="Duration"
@@ -377,7 +408,8 @@ class EventPage extends Component {
                           <EditOutlinedIcon fontSize="small" />
                         </IconButton>
                         <IconButton style={{ outline: '0' }} title="Delete Event"
-                          onClick={() => this.DeleteEvent(val.id)}>
+                          onClick={() => 
+                          this.setState({isOpenAlert : true, deleteID: val.id})}>
                           <DeleteOutlinedIcon fontSize="small" />
                         </IconButton>
                       </div>
@@ -398,6 +430,7 @@ class EventPage extends Component {
             />
           </Col>
           {addEvent}
+          {deleteEvent}
         </Row>
       </div>
     );
