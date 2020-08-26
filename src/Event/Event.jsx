@@ -25,6 +25,7 @@ import links from '../apiLink.json'
 
 //Import style
 import './event.css'
+// import { fi } from 'date-fns/esm/locale';
 // import "react-datepicker/dist/react-datepicker.css";
 
 const views = ['day', 'workWeek', 'month'];
@@ -120,8 +121,16 @@ class EventPage extends Component {
       })
       .then(json => {
         if (json[0] === 200) {
-          this.setState({ eventDetails: json[1] }, () => {
-          });
+            let sortedDates = json[1].sort(function (a, b) {
+              if (a.start < b.start) {            // a comes first
+                  return -1
+              } else if (a.start < b.start) {     // b comes first
+                  return 1
+              } else {        // equal, so order is irrelevant
+                  return 0      
+              }
+            })
+            this.setState({eventDetails: sortedDates})
         }
       })
       .catch(error =>
